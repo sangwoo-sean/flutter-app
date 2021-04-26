@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
           title: Text(email)
         ),
         body: Container(
-          child: FlatButton(onPressed: (){
+          child: TextButton(onPressed: (){
             FirebaseAuth.instance.signOut();
           }, child: Text("Logout"))
         )

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/data/join_or_login.dart';
 import 'package:flutter_intro/helper/login_background.dart';
+import 'package:flutter_intro/screens/forget_pw.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
@@ -61,6 +62,7 @@ class AuthPage extends StatelessWidget {
   }
 
   Widget _inputForm(Size size) => Padding(
+        // 입력폼
         padding: EdgeInsets.all(size.width * 0.05),
         child: Card(
           shape:
@@ -80,7 +82,7 @@ class AuthPage extends StatelessWidget {
                           icon: Icon(Icons.account_circle), labelText: "Email"),
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return "이메일을 입력하세요";
+                          return "없는 이메일입니다.";
                         }
                         return null;
                       },
@@ -103,7 +105,14 @@ class AuthPage extends StatelessWidget {
                     Consumer<JoinOrLogin>(
                       builder: (context, value, child) => Opacity(
                           opacity: value.isJoin ? 0 : 1,
-                          child: Text("비밀번호 찾기")),
+                          child: GestureDetector(
+                              onTap: value.isJoin ? null : () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ForgetPw()));
+                              },
+                              child: Text("비밀번호 찾기"))),
                     ),
                   ],
                 )),
@@ -112,6 +121,7 @@ class AuthPage extends StatelessWidget {
       );
 
   Widget _authButton(Size size) => Positioned(
+        // 로그인버튼
         left: size.width * 0.15,
         right: size.width * 0.15,
         bottom: 0,
@@ -138,6 +148,7 @@ class AuthPage extends StatelessWidget {
       );
 
   Widget get _logoImage => Expanded(
+        // 로그인창 이미지
         child: Padding(
           padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
           child: FittedBox(
@@ -151,6 +162,7 @@ class AuthPage extends StatelessWidget {
       );
 
   void _register(BuildContext context) async {
+    // 회원가입
     UserCredential userCredential;
     try {
       userCredential = await FirebaseAuth.instance
@@ -158,16 +170,20 @@ class AuthPage extends StatelessWidget {
               email: _emailController.text, password: _passwordController.text);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
+        showSnackBar(context, '비밀번호가 너무 짧습니다.');
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
+        showSnackBar(context, '이미 존재하는 이메일입니다.');
         print('The account already exists for that email.');
       }
     } catch (e) {
       print(e);
     }
+    showSnackBar(context, '회원가입이 완료되었습니다.');
   }
 
   void _login(BuildContext context) async {
+    // 로그인
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
@@ -175,7 +191,6 @@ class AuthPage extends StatelessWidget {
 
       print(userCredential.user.email);
       print("Login success");
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -184,4 +199,12 @@ class AuthPage extends StatelessWidget {
       }
     }
   }
+
+  void showSnackBar(BuildContext context, String text){
+    final snackBar = SnackBar(
+      content: Text(text),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 }
