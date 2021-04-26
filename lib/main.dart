@@ -30,10 +30,11 @@ class Splash extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
-          return ChangeNotifierProvider<JoinOrLogin>.value(
-              value: JoinOrLogin(),
-              child: AuthPage()
-          );
+          return MainPage(email: "testing");
+          // return ChangeNotifierProvider<JoinOrLogin>.value(
+          //     value: JoinOrLogin(),
+          //     child: AuthPage()
+          // );
         } else{
           return MainPage(email: snapshot.data.email);
         }
