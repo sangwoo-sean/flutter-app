@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:flutter_intro/screens/another.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({this.email});
@@ -47,6 +48,7 @@ class _RandomWordsState extends State<RandomWords> {
         title: Text('Startup Name Generator'),
         actions: [ // 리스트표시
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+          IconButton(icon: Icon(Icons.arrow_circle_up), onPressed: _movePage),
         ]
       ),
       body: _buildSuggestions(),
@@ -124,4 +126,10 @@ class _RandomWordsState extends State<RandomWords> {
 
   }
 
+  void _movePage(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => anotherRoute()),
+    );
+  }
 }
