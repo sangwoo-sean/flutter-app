@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/data/join_or_login.dart';
+import 'package:flutter_intro/screens/another.dart';
 import 'package:flutter_intro/screens/login.dart';
 import 'package:flutter_intro/screens/main_page.dart';
 import 'package:provider/provider.dart';
@@ -30,13 +31,13 @@ class Splash extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
-          return MainPage(email: "testing");
-          // return ChangeNotifierProvider<JoinOrLogin>.value(
-          //     value: JoinOrLogin(),
-          //     child: AuthPage()
-          // );
+          // return MainPage(email: "testing");
+          return ChangeNotifierProvider<JoinOrLogin>.value(
+              value: JoinOrLogin(),
+              child: AuthPage()
+          );
         } else{
-          return MainPage(email: snapshot.data.email);
+          return anotherRoute(email: snapshot.data.email);
         }
       }
     );

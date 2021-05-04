@@ -1,6 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intro/main.dart';
+import 'package:flutter_intro/screens/main_page.dart';
 
 class anotherRoute extends StatelessWidget {
+
+  anotherRoute({this.email});
+
+  final String email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,21 +30,32 @@ class anotherRoute extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              title: Text("Logout"),
+              onTap: (){
+                FirebaseAuth.instance.signOut();
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Splash()),
+                );
+              },
+            ),
           ],
         ),
       ),
       appBar: AppBar(
-        title: Text("another Route"),
+        title: Text("Hi, $email"),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: email)));
 
           },
-          child: Text("Go back!"),
+          child: Text("StartUp Name Generator"),
         ),
       ),
     );
   }
+
+
 }

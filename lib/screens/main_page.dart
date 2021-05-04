@@ -17,17 +17,6 @@ class MainPage extends StatelessWidget {
       ),
       home: RandomWords(),
     );
-
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: Text(email)
-    //     ),
-    //     body: Container(
-    //       child: TextButton(onPressed: (){
-    //         FirebaseAuth.instance.signOut();
-    //       }, child: Text("Logout"))
-    //     )
-    // );
   }
 }
 
@@ -37,6 +26,11 @@ class RandomWords extends StatefulWidget {
 }
 
 class _RandomWordsState extends State<RandomWords> {
+
+  _RandomWordsState({this.email});
+
+  final String email;
+
   final _suggestions = <WordPair>[]; //
   final _saved = <WordPair>{}; // 저장될 세트
   final _biggerFont = TextStyle(fontSize: 18.0);
@@ -48,7 +42,10 @@ class _RandomWordsState extends State<RandomWords> {
         title: Text('Startup Name Generator'),
         actions: [ // 리스트표시
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
-          IconButton(icon: Icon(Icons.arrow_circle_up), onPressed: _movePage),
+          IconButton(icon: Icon(Icons.home),
+              onPressed: _movePage
+            // onPressed: (){Navigator.pop(context);}
+          ),
         ]
       ),
       body: _buildSuggestions(),
@@ -129,7 +126,7 @@ class _RandomWordsState extends State<RandomWords> {
   void _movePage(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => anotherRoute()),
+      MaterialPageRoute(builder: (context) => anotherRoute(email: email)),
     );
   }
 }
